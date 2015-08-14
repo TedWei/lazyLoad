@@ -12,6 +12,11 @@
             console.error("not found script");
             return;
         }
+
+
+        var toString = function(){
+            return Object.prototype.toString.apply;
+        }
         var tmpArray = [];
         var loadS = function(url, callB) {
             var newScript = document.createElement('script');
@@ -22,7 +27,7 @@
                         newScript.onreadystatechange = null;
                         tmpArray.shift(url);
                         if (!tmpArray.length) {
-                            callB();
+                            callB && callB();
                         }
                     }
                 };
@@ -30,7 +35,7 @@
                 newScript.onload = function() {
                     tmpArray.shift(url);
                     if (!tmpArray.length) {
-                        callB();
+                        callB && callB();
                     }
                 };
             }
@@ -39,9 +44,9 @@
         };
 
         var init = function() {
-            if (Object.prototype.toString.apply(script_url) === '[object Array]') {
+            if (toString(script_url) === '[object Array]') {
                 tmpArray = script_url;
-            } else if (typeof script_url === "string") {
+            } else if (toString(script_url) === "[object String]") {
                 tmpArray.push(script_url);
             }
 
